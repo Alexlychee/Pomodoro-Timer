@@ -1,3 +1,4 @@
+from ctypes.wintypes import SHORT
 from tkinter import *
 import math
 # ---------------------------- CONSTANTS ------------------------------- #
@@ -10,12 +11,27 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 THUMBS_UP = "✔"
+reps = 0
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    countdown(1 * 60)
+    global reps
+    reps += 1
+    work_sec = WORK_MIN * 60
+    short_break_sec = SHORT_BREAK_MIN * 60
+    long_break_sec = LONG_BREAK_MIN * 60
+    if reps % 8 == 0:
+        countdown(long_break_sec)
+        timer_label.config(text="Break", fg=RED)
+    elif reps % 2 == 0:
+        countdown(short_break_sec)
+        timer_label.config(text="Break", fg=PINK)
+    else:
+        countdown(work_sec)
+        timer_label.config(text="Work", fg=GREEN)
+
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def countdown(count):
     count_min = math.floor(count / 60)
@@ -25,6 +41,8 @@ def countdown(count):
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
         window.after(1000, countdown, count - 1)
+    else:
+        start_timer()
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()

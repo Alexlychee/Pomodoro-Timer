@@ -12,9 +12,16 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 THUMBS_UP = "✔"
 reps = 0
+timer = None
 
 # ---------------------------- TIMER RESET ------------------------------- # 
-
+def reset_timer():
+    window.after_cancel(timer)
+    canvas.itemconfig(timer_text, text="00:00")
+    timer_label.config(text="Timer")
+    check_mark.config(text="")
+    global reps
+    reps = 0
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     global reps
@@ -40,7 +47,8 @@ def countdown(count):
         count_sec = f"0{count_sec}"
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
-        window.after(1000, countdown, count - 1)
+        global timer
+        timer = window.after(1000, countdown, count - 1)
     else:
         start_timer()
         marks = ""
@@ -68,7 +76,7 @@ start_button = Button(text="Start", command=start_timer ,highlightthickness=0)
 start_button.grid(column=0, row=2)
 
 # Reset Button
-reset_button = Button(text="Reset", highlightthickness=0)
+reset_button = Button(text="Reset", command=reset_timer, highlightthickness=0)
 reset_button.grid(column=2, row=2)
 
 # Checkmark Symbol

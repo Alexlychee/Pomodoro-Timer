@@ -43,6 +43,11 @@ def countdown(count):
         window.after(1000, countdown, count - 1)
     else:
         start_timer()
+        marks = ""
+        work_sessions = math.floor(reps/2)
+        for _ in range(work_sessions):
+            marks += THUMBS_UP
+        check_mark.config(text=marks)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -67,7 +72,7 @@ reset_button = Button(text="Reset", highlightthickness=0)
 reset_button.grid(column=2, row=2)
 
 # Checkmark Symbol
-check_mark = Label(text=THUMBS_UP, bg=YELLOW, fg=GREEN, highlightthickness=0)
+check_mark = Label(bg=YELLOW, fg=GREEN, highlightthickness=0)
 check_mark.grid(column=1, row=3)
 
 window.mainloop()
